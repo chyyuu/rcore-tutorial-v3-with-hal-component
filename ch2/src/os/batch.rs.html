@@ -223,6 +223,8 @@
 <a href="#223" id="223">223</a>
 <a href="#224" id="224">224</a>
 <a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a>
+<a href="#227" id="227">227</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! batch subsystem
 
 </span><span class="kw">use </span><span class="kw">crate</span>::config::PAGE_SIZE;
@@ -233,6 +235,7 @@
 <span class="kw">use </span>polyhal::{TrapFrame,TrapFrameArgs,run_user_task,shutdown,VIRT_ADDR_START};
 <span class="kw">use </span>polyhal::pagetable::{MappingFlags, MappingSize, PageTable, PageTableWrapper};
 <span class="kw">use </span>polyhal::addr::<span class="kw-2">*</span>;
+<span class="kw">use </span>polyhal::mem::Barrier;
 <span class="kw">pub use </span><span class="kw">crate</span>::frame_allocater::{frame_alloc, frame_alloc_persist, frame_dealloc, FrameTracker};
 <span class="kw">const </span>USER_STACK_SIZE: usize = <span class="number">4096 </span>* <span class="number">2</span>;
 <span class="kw">const </span>KERNEL_STACK_SIZE: usize = <span class="number">4096 </span>* <span class="number">2</span>;
@@ -335,7 +338,7 @@
         );
         <span class="macro">info!</span>(<span class="string">&quot;app src: {:#x} size: {:#x}&quot;</span>, <span class="self">self</span>.app_start[app_id], <span class="self">self</span>.app_start[app_id + <span class="number">1</span>] - <span class="self">self</span>.app_start[app_id]);
         <span class="kw">let </span>app_dst = core::slice::from_raw_parts_mut(APP_BASE_ADDRESS <span class="kw">as </span><span class="kw-2">*mut </span>u8, app_src.len());
-        app_dst.copy_from_slice(app_src);
+		app_dst.copy_from_slice(app_src);
         <span class="comment">// hexdump(&amp;app_src);
         // hexdump(&amp;app_dst);
         // panic!(&quot;123&quot;);
@@ -345,8 +348,9 @@
         // Therefore, fence.i must be executed after we have loaded
         // the code of the next app into the instruction memory.
         // See also: riscv non-priv spec chapter 3, &#39;Zifencei&#39; extension.
-        </span><span class="macro">asm!</span>(<span class="string">&quot;fence.i&quot;</span>);
-    }
+        // asm!(&quot;fence.i&quot;);
+		// Barrier::complete_sync()
+    </span>}
 
     <span class="kw">pub fn </span>get_current_app(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
         <span class="self">self</span>.current_app

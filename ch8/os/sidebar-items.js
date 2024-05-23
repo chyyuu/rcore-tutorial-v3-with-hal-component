@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["kernel_interrupt","rust_main"],"macro":["print","println"],"mod":["board","config","console","drivers","fs","lang_items","logging","mm","sync","syscall","task"],"struct":["PageAllocImpl"]};

@@ -4,7 +4,7 @@
 !.devcontainer/devcontainer.json
 
 .idea
-**/Cargo.lock
+#**/Cargo.lock
 **/target/
 
 os/src/link_app.S
@@ -18,10 +18,10 @@ os/.gdb_history
 user/build
 user/target/*
 user/.idea/*
-user/Cargo.lock
-easy-fs/Cargo.lock
+#user/Cargo.lock
+#easy-fs/Cargo.lock
 easy-fs/target/*
-easy-fs-fuse/Cargo.lock
+#easy-fs-fuse/Cargo.lock
 easy-fs-fuse/target/*
 pushall.sh
 /bin
